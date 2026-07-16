@@ -13,7 +13,9 @@ export default function LandForm() {
   const [block, setBlock] = useState("");
   const [street, setStreet] = useState("");
   const [area, setArea] = useState("");
+
   const [guidanceValue, setGuidanceValue] = useState(0);
+  const [stampDuty, setStampDuty] = useState(0);
 
   useEffect(() => {
     async function getVillages() {
@@ -38,6 +40,9 @@ export default function LandForm() {
       setBlock("");
       setStreets([]);
       setStreet("");
+
+      setGuidanceValue(0);
+      setStampDuty(0);
     }
 
     getWards();
@@ -57,6 +62,9 @@ export default function LandForm() {
       setBlock("");
       setStreets([]);
       setStreet("");
+
+      setGuidanceValue(0);
+      setStampDuty(0);
     }
 
     getBlocks();
@@ -74,6 +82,9 @@ export default function LandForm() {
       setStreets(data);
 
       setStreet("");
+
+      setGuidanceValue(0);
+      setStampDuty(0);
     }
 
     getStreets();
@@ -95,7 +106,9 @@ export default function LandForm() {
     });
 
     const data = await res.json();
+
     setGuidanceValue(data.guidanceValue);
+    setStampDuty(data.stampDuty);
   }
 
   return (
@@ -108,7 +121,11 @@ export default function LandForm() {
 
         <select
           value={village}
-          onChange={(e) => setVillage(e.target.value)}
+          onChange={(e) => {
+            setVillage(e.target.value);
+            setGuidanceValue(0);
+            setStampDuty(0);
+          }}
           className="w-full border border-black p-2 rounded"
         >
           <option value="">Select Village</option>
@@ -121,7 +138,11 @@ export default function LandForm() {
 
         <select
           value={ward}
-          onChange={(e) => setWard(e.target.value)}
+          onChange={(e) => {
+            setWard(e.target.value);
+            setGuidanceValue(0);
+            setStampDuty(0);
+          }}
           className="w-full border border-black p-2 rounded"
         >
           <option value="">Select Ward</option>
@@ -134,7 +155,11 @@ export default function LandForm() {
 
         <select
           value={block}
-          onChange={(e) => setBlock(e.target.value)}
+          onChange={(e) => {
+            setBlock(e.target.value);
+            setGuidanceValue(0);
+            setStampDuty(0);
+          }}
           className="w-full border border-black p-2 rounded"
         >
           <option value="">Select Block</option>
@@ -147,7 +172,11 @@ export default function LandForm() {
 
         <select
           value={street}
-          onChange={(e) => setStreet(e.target.value)}
+          onChange={(e) => {
+            setStreet(e.target.value);
+            setGuidanceValue(0);
+            setStampDuty(0);
+          }}
           className="w-full border border-black p-2 rounded"
         >
           <option value="">Select Street</option>
@@ -162,7 +191,11 @@ export default function LandForm() {
           type="number"
           placeholder="Area (Sq. Meters)"
           value={area}
-          onChange={(e) => setArea(e.target.value)}
+          onChange={(e) => {
+            setArea(e.target.value);
+            setGuidanceValue(0);
+            setStampDuty(0);
+          }}
           className="w-full border border-black p-2 rounded"
         />
 
@@ -173,9 +206,26 @@ export default function LandForm() {
           Calculate
         </button>
 
-        <div className="border border-black rounded p-4 text-center">
-          <p className="text-sm">Calculated Guidance Value</p>
-          <p className="text-xl font-bold">₹ {Number(guidanceValue).toLocaleString("en-IN")}</p>
+        <div className="border border-black rounded p-4 space-y-4">
+          <div className="text-center">
+            <p className="text-sm font-medium">
+              Calculated Guidance Value
+            </p>
+            <p className="text-xl font-bold">
+              ₹ {Number(guidanceValue).toLocaleString("en-IN")}
+            </p>
+          </div>
+
+          <hr />
+
+          <div className="text-center">
+            <p className="text-sm font-medium">
+              Estimated Stamp Duty (7.65%)
+            </p>
+            <p className="text-xl font-bold">
+              ₹ {Number(stampDuty).toLocaleString("en-IN")}
+            </p>
+          </div>
         </div>
 
       </div>

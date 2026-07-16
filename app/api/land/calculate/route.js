@@ -16,10 +16,12 @@ export async function POST(request) {
     );
 
     const rate = Number(result.rows[0].guidance_value);
+    const guidanceValue = rate * area;
+    const stampDuty = guidanceValue * 0.0765;
 
     return NextResponse.json({
         rate,
-        guidanceValue: rate * area
+        guidanceValue,
+        stampDuty,
     });
-
 }

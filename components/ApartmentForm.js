@@ -10,8 +10,8 @@ export default function ApartmentForm() {
   const [apartment, setApartment] = useState("");
   const [area, setArea] = useState("");
   const [guidanceValue, setGuidanceValue] = useState(0);
+  const [stampDuty, setStampDuty] = useState(0);
 
-  // Fetch villages on page load
   useEffect(() => {
     async function getVillages() {
       const res = await fetch("/api/apartment/villages");
@@ -22,7 +22,6 @@ export default function ApartmentForm() {
     getVillages();
   }, []);
 
-  // Fetch apartments when village changes
   useEffect(() => {
     if (!village) {
       setApartments([]);
@@ -57,7 +56,9 @@ export default function ApartmentForm() {
     });
 
     const data = await res.json();
+
     setGuidanceValue(data.guidanceValue);
+    setStampDuty(data.stampDuty);
   }
 
   return (
@@ -70,7 +71,11 @@ export default function ApartmentForm() {
 
         <select
           value={village}
-          onChange={(e) => setVillage(e.target.value)}
+          onChange={(e) => {
+            setVillage(e.target.value);
+            setGuidanceValue(0);
+            setStampDuty(0);
+          }}
           className="w-full border border-black p-2 rounded"
         >
           <option value="">Select Village</option>
@@ -83,7 +88,11 @@ export default function ApartmentForm() {
 
         <select
           value={apartment}
-          onChange={(e) => setApartment(e.target.value)}
+          onChange={(e) => {
+            setApartment(e.target.value);
+            setGuidanceValue(0);
+            setStampDuty(0);
+          }}
           className="w-full border border-black p-2 rounded"
         >
           <option value="">Select Apartment</option>
@@ -101,7 +110,11 @@ export default function ApartmentForm() {
           type="number"
           placeholder="Area (Sq. Meters)"
           value={area}
-          onChange={(e) => setArea(e.target.value)}
+          onChange={(e) => {
+            setArea(e.target.value);
+            setGuidanceValue(0);
+            setStampDuty(0);
+          }}
           className="w-full border border-black p-2 rounded"
         />
 
@@ -112,9 +125,28 @@ export default function ApartmentForm() {
           Calculate
         </button>
 
-        <div className="border border-black rounded p-4 text-center">
-          <p className="text-sm">Calculated Guidance Value</p>
-          <p className="text-xl font-bold">₹ {Number(guidanceValue).toLocaleString("en-IN")}</p>
+        <div className="border border-black rounded p-4 space-y-4">
+
+          <div className="text-center">
+            <p className="text-sm font-medium">
+              Calculated Guidance Value
+            </p>
+            <p className="text-xl font-bold">
+              ₹ {Number(guidanceValue).toLocaleString("en-IN")}
+            </p>
+          </div>
+
+          <hr />
+
+          <div className="text-center">
+            <p className="text-sm font-medium">
+              Estimated Stamp Duty (7.65%)
+            </p>
+            <p className="text-xl font-bold">
+              ₹ {Number(stampDuty).toLocaleString("en-IN")}
+            </p>
+          </div>
+
         </div>
 
       </div>
