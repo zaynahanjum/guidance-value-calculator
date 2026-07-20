@@ -8,6 +8,7 @@ export default function ApartmentForm() {
 
   const [village, setVillage] = useState("");
   const [apartment, setApartment] = useState("");
+  const [unit, setUnit] = useState("sqm");
   const [area, setArea] = useState("");
   const [guidanceValue, setGuidanceValue] = useState(0);
   const [stampDuty, setStampDuty] = useState(0);
@@ -52,6 +53,7 @@ export default function ApartmentForm() {
         village,
         apartment,
         area,
+        unit
       }),
     });
 
@@ -106,9 +108,17 @@ export default function ApartmentForm() {
           ))}
         </select>
 
+        <div className="flex flex-row justify-between">
+          <UnitBox text="sqm" unit={unit} setUnit={setUnit} />
+          <UnitBox text="sqft" unit={unit} setUnit={setUnit} />
+          <UnitBox text="cent" unit={unit} setUnit={setUnit} />
+          <UnitBox text="gunta" unit={unit} setUnit={setUnit} />
+          <UnitBox text="acre" unit={unit} setUnit={setUnit} />
+        </div>
+
         <input
           type="number"
-          placeholder="Area (Sq. Meters)"
+          placeholder={`Area (${unit})`}
           value={area}
           onChange={(e) => {
             setArea(e.target.value);
@@ -140,7 +150,7 @@ export default function ApartmentForm() {
 
           <div className="text-center">
             <p className="text-sm font-medium">
-              Estimated Stamp Duty (7.65%)
+              Estimated Stamp Duty (7.6%)
             </p>
             <p className="text-xl font-bold">
               ₹ {Number(stampDuty).toLocaleString("en-IN")}
@@ -150,6 +160,19 @@ export default function ApartmentForm() {
         </div>
 
       </div>
+    </div>
+  );
+}
+
+function UnitBox({ text, unit, setUnit }) {
+  return (
+    <div
+      onClick={() => {
+        setUnit(text);
+      }}
+      className={`rounded px-2 border cursor-pointer ${unit === text ? "bg-black text-white" : "bg-white"}`}
+    >
+      {text}
     </div>
   );
 }
